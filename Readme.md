@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
-* Студент: [Egor Pisarev](https://up.htmlacademy.ru/ecmascript/10/user/1179435).
-* Наставник: `Неизвестно`.
+- Студент: [Egor Pisarev](https://up.htmlacademy.ru/ecmascript/10/user/1179435).
+- Наставник: [Михаил Еланцев](https://htmlacademy.ru/profile/id928641).
 
 ---
 
