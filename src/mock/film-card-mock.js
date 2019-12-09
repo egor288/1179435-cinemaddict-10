@@ -49,10 +49,7 @@ const randomDescription = () => {
 };
 
 const trueOrFalse = () => {
-  if (getRandomInRange(0, 1) === 1) {
-    return true;
-  }
-  return false;
+  return getRandomInRange(0, 1) === 1;
 };
 
 const commentNames = [`Tim Macoveev`, `John Doe`, `User1`, `User2`, `User3`];
@@ -117,34 +114,51 @@ const genres = [
   `Mystery`
 ];
 
-export const filmCards = [];
+const months = [
+  `January`,
+  `February`,
+  `March`,
+  `April`,
+  `May`,
+  `June`,
+  `July`,
+  `August`,
+  `September`,
+  `October`,
+  `November`,
+  `December`
+];
 
-for (let i = 0; i <= 19; i++) {
-  let card = {};
-  card.id = i;
-  card.title = namesOfFilms[getRandomInRange(0, namesOfFilms.length - 1)];
-  card.rating = `${getRandomInRange(0, 10)}.${getRandomInRange(0, 9)}`;
-  card.year = getRandomInRange(1900, 2019);
-  card.durationH = getRandomInRange(1, 5);
-  card.durationM = getRandomInRange(0, 59);
-  card.poster = posters[getRandomInRange(0, posters.length - 1)];
-  card.description = randomDescription();
-  card.watched = trueOrFalse();
-  card.favorite = trueOrFalse();
-  card.watchlist = trueOrFalse();
-  card.comments = generateComments();
-  card.ageRating = getRandomInRange(0, 25);
-  card.day = getRandomInRange(0, 30);
-  card.director = names[getRandomInRange(0, names.length - 1)];
-  card.writers = `${names[getRandomInRange(0, names.length - 1)]}, ${
-    names[getRandomInRange(0, names.length - 1)]
-  }, ${names[getRandomInRange(0, names.length - 1)]}.`;
-  card.actors = `${names[getRandomInRange(0, names.length - 1)]}, ${
-    names[getRandomInRange(0, names.length - 1)]
-  }, ${names[getRandomInRange(0, names.length - 1)]}.`;
-  card.country = countrys[getRandomInRange(0, countrys.length - 1)];
-  card.genres1 = genres[getRandomInRange(0, genres.length - 1)];
-  card.genres2 = genres[getRandomInRange(0, genres.length - 1)];
-  card.genres3 = genres[getRandomInRange(0, genres.length - 1)];
-  filmCards.push(card);
-}
+export const generateArr = (filmsCount) => {
+  const filmCards = [];
+  for (let i = 0; i <= filmsCount; i++) {
+    let card = {};
+    card.id = i;
+    card.title = namesOfFilms[getRandomInRange(0, namesOfFilms.length - 1)];
+    card.rating = `${getRandomInRange(0, 10)}.${getRandomInRange(0, 9)}`;
+    card.day = getRandomInRange(0, 30);
+    card.month = months[getRandomInRange(0, months.length - 1)];
+    card.year = getRandomInRange(1900, 2019);
+    card.duration = `${getRandomInRange(60, 300)}`;
+    card.poster = posters[getRandomInRange(0, posters.length - 1)];
+    card.description = randomDescription();
+    card.watched = trueOrFalse();
+    card.favorite = trueOrFalse();
+    card.watchlist = trueOrFalse();
+    card.comments = generateComments();
+    card.ageRating = getRandomInRange(0, 25);
+    card.director = names[getRandomInRange(0, names.length - 1)];
+    card.writers = `${names[getRandomInRange(0, names.length - 1)]}, ${
+      names[getRandomInRange(0, names.length - 1)]
+    }, ${names[getRandomInRange(0, names.length - 1)]}.`;
+    card.actors = `${names[getRandomInRange(0, names.length - 1)]}, ${
+      names[getRandomInRange(0, names.length - 1)]
+    }, ${names[getRandomInRange(0, names.length - 1)]}.`;
+    card.country = countrys[getRandomInRange(0, countrys.length - 1)];
+    card.genres1 = genres[getRandomInRange(0, genres.length - 1)];
+    card.genres2 = genres[getRandomInRange(0, genres.length - 1)];
+    card.genres3 = genres[getRandomInRange(0, genres.length - 1)];
+    filmCards.push(card);
+  }
+  return filmCards;
+};

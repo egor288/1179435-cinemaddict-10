@@ -1,4 +1,12 @@
 export const renderPopup = (filmCard) => {
+  const durationMinutes = (elem) => {
+    let minutes = Math.round(elem.duration % 60);
+    if (minutes >= 0 && minutes <= 9) {
+      return `0${minutes}`;
+    }
+    return minutes;
+  };
+
   const renderComments = () => {
     let result = ``;
     filmCard.comments.forEach(function (comment) {
@@ -61,15 +69,15 @@ export const renderPopup = (filmCard) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${filmCard.day} March ${
-  filmCard.year
-}</td>
+              <td class="film-details__cell">${filmCard.day} ${
+  filmCard.month
+} ${filmCard.year}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${filmCard.durationH}h ${
-  filmCard.durationM
-}m</td>
+              <td class="film-details__cell">${Math.round(
+      filmCard.duration / 60
+  )}:${durationMinutes(filmCard)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -105,7 +113,9 @@ export const renderPopup = (filmCard) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${
+  filmCard.comments.length
+}</span></h3>
 
         <ul class="film-details__comments-list">
         ${renderComments()}

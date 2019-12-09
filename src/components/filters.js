@@ -1,4 +1,4 @@
-import {filmCards} from "../mock/film-card-mock";
+import {films} from "../main.js";
 
 export const renderFilters = () => {
   return `<ul class="sort">
@@ -8,18 +8,16 @@ export const renderFilters = () => {
   </ul>`;
 };
 
-export const sortByDate = (filmsArr) => {
-  let newFilms = [];
-  newFilms = filmCards.slice(0);
+export const sortByDate = () => {
+  let newFilms = films.slice(0);
   newFilms.sort(function (a, b) {
     return b.year - a.year;
   });
   return newFilms;
 };
 
-export const sortByRating = (filmsArr) => {
-  let newFilms = [];
-  newFilms = filmCards.slice(0);
+export const sortByRating = () => {
+  let newFilms = films.slice(0);
   newFilms.sort(function (a, b) {
     return b.rating - a.rating;
   });
