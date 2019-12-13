@@ -1,11 +1,12 @@
-import {renderExtraFilms} from "./components/extra-films";
-import {renderfilmCard} from "./components/film-card";
-import {renderFilms} from "./components/films.js";
-import {renderFilters} from "./components/filters";
-import {renderHeader} from "./components/header";
-import {renderNavigation} from "./components/navigation";
-import {renderPopup} from "./components/popup";
-import {renderSection} from "./components/section";
+import {render, RenderPosition} from "./utils";
+import ExtraFilms from "./components/extra-films";
+import FilmCard from "./components/film-card";
+import Films from "./components/films.js";
+import Filter from "./components/filters";
+import Header from "./components/header";
+import Navigation from "./components/navigation";
+import Popup from "./components/popup";
+import Section from "./components/section";
 import {generateArr} from "./mock/film-card-mock";
 export const films = generateArr(19);
 
@@ -31,10 +32,6 @@ const countFilters = (filmsArr) => {
   return result;
 };
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const countWatched = () => {
   let counter = 0;
   films.forEach(function (elem) {
@@ -48,17 +45,25 @@ const countWatched = () => {
 const siteMainElement = document.querySelector(`.main`);
 const siteHeader = document.querySelector(`header`);
 
-render(siteHeader, renderHeader(countWatched()), `beforebegin`);
+render(
+    siteHeader,
+    new Header(countWatched()).getElement(),
+    RenderPosition.BEFOREEND
+);
 
-render(siteMainElement, renderNavigation(countFilters(films)), `beforeend`);
+render(
+    siteMainElement,
+    new Navigation(countFilters(films)).getElement(),
+    RenderPosition.BEFOREEND
+);
 
-render(siteMainElement, renderFilters(), `beforeend`);
+render(siteMainElement, new Filter().getElement(), RenderPosition.BEFOREEND);
 
-render(siteMainElement, renderSection(), `beforeend`);
+render(siteMainElement, new Section().getElement(), RenderPosition.BEFOREEND);
 
 const section = document.querySelector(`.films`);
 
-render(section, renderFilms(), `beforeend`);
+render(section, new Films().getElement(), RenderPosition.BEFOREEND);
 
 const filmsContaner = document.querySelector(`.films-list__container`);
 
@@ -67,11 +72,18 @@ const filmsCount = footer.querySelector(`p`);
 filmsCount.textContent = `${films.length} movies inside`;
 
 let showingFilmsCount = SHOWING_CARDS_COUNT_ON_START;
+
 films
   .slice(0, showingFilmsCount)
-  .forEach((card) => render(filmsContaner, renderfilmCard(card), `beforeend`));
+  .forEach((card) =>
+    render(
+        filmsContaner,
+        new FilmCard(card).getElement(),
+        RenderPosition.BEFOREEND
+    )
+  );
 
-render(section, renderExtraFilms(), `beforeend`);
+render(section, new ExtraFilms().getElement(), RenderPosition.BEFOREEND);
 
 const extraFilmsRated = document.querySelector(`.topRated`);
 const extraFilmsCommented = document.querySelector(`.mostCommented`);
@@ -85,10 +97,13 @@ topRatedArr.sort(function (a, b) {
 if (topRatedArr[0] !== 0) {
   let arrLength = topRatedArr.length > 2 ? 2 : topRatedArr.length;
   for (let i = 0; i < arrLength; i++) {
-    render(extraFilmsRated, renderfilmCard(topRatedArr[i]), `beforeend`);
+    render(
+        extraFilmsRated,
+        new FilmCard(topRatedArr[i]).getElement(),
+        RenderPosition.BEFOREEND
+    );
   }
 }
-
 mostCommentedArr.sort(function (a, b) {
   return b.comments.length - a.comments.length;
 });
@@ -98,8 +113,8 @@ if (mostCommentedArr[0] !== 0) {
   for (let i = 0; i < arrLength; i++) {
     render(
         extraFilmsCommented,
-        renderfilmCard(mostCommentedArr[i]),
-        `beforeend`
+        new FilmCard(mostCommentedArr[i]).getElement(),
+        RenderPosition.BEFOREEND
     );
   }
 }
@@ -107,8 +122,8 @@ if (mostCommentedArr[0] !== 0) {
 const openPopupListner = (event) => {
   render(
       siteMainElement,
-      renderPopup(films[event.currentTarget.id]),
-      `beforeend`
+      new Popup(films[event.currentTarget.id]).getElement(),
+      RenderPosition.BEFOREEND
   );
   document
     .querySelector(`.film-details__close-btn`)
@@ -137,7 +152,13 @@ loadMoreButton.addEventListener(`click`, () => {
 
   films
     .slice(prevTasksCount, showingFilmsCount)
-    .forEach((card) => render(filmsContaner, renderfilmCard(card), `beforeend`));
+    .forEach((card) =>
+      render(
+          filmsContaner,
+          new FilmCard(card).getElement(),
+          RenderPosition.BEFOREEND
+      )
+    );
 
   allCards = document.querySelectorAll(`.film-card`);
 

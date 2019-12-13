@@ -1,3 +1,4 @@
+import {createElement} from "../utils.js";
 export const renderPopup = (filmCard) => {
   const durationMinutes = (elem) => {
     let minutes = Math.round(elem.duration % 60);
@@ -156,3 +157,26 @@ export const renderPopup = (filmCard) => {
   </form>
 </section>`;
 };
+
+export default class Popup {
+  constructor(filmElement) {
+    this._filmElement = filmElement;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return renderPopup(this._filmElement);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
