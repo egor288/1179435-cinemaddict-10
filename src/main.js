@@ -73,15 +73,18 @@ filmsCount.textContent = `${films.length} movies inside`;
 
 let showingFilmsCount = SHOWING_CARDS_COUNT_ON_START;
 
-films
-  .slice(0, showingFilmsCount)
-  .forEach((card) =>
-    render(
-        filmsContaner,
-        new FilmCard(card).getElement(),
-        RenderPosition.BEFOREEND
-    )
-  );
+const popups = [];
+
+function cardAndPopup(prevTasksCount) {
+  films.slice(prevTasksCount, showingFilmsCount).forEach((card) => {
+    const filmCard = new FilmCard(card);
+    render(filmsContaner, filmCard.getElement(), RenderPosition.BEFOREEND);
+    const popup = new Popup(card);
+    popups.push(popup);
+  });
+  return popups;
+}
+cardAndPopup();
 
 render(section, new ExtraFilms().getElement(), RenderPosition.BEFOREEND);
 
@@ -122,7 +125,7 @@ if (mostCommentedArr[0] !== 0) {
 const openPopupListner = (event) => {
   render(
       siteMainElement,
-      new Popup(films[event.currentTarget.id]).getElement(),
+      popups[event.currentTarget.id].getElement(),
       RenderPosition.BEFOREEND
   );
   document
@@ -149,17 +152,7 @@ loadMoreButton.addEventListener(`click`, () => {
   const prevTasksCount = showingFilmsCount;
 
   showingFilmsCount = showingFilmsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
-
-  films
-    .slice(prevTasksCount, showingFilmsCount)
-    .forEach((card) =>
-      render(
-          filmsContaner,
-          new FilmCard(card).getElement(),
-          RenderPosition.BEFOREEND
-      )
-    );
-
+  cardAndPopup(prevTasksCount);
   allCards = document.querySelectorAll(`.film-card`);
 
   allCards.forEach(function (element) {
