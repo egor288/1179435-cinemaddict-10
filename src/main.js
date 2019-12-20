@@ -7,9 +7,11 @@ import Header from "./components/header";
 import Navigation from "./components/navigation";
 import Popup from "./components/popup";
 import Section from "./components/section";
+import NoFilms from "./components/no-data";
 import {generateArr} from "./mock/film-card-mock";
-export const films = generateArr(19);
+export const films = generateArr();
 
+const ESC_KEYCODE = 27;
 const SHOWING_CARDS_COUNT_ON_START = 5;
 const SHOWING_CARDS_COUNT_BY_BUTTON = 5;
 
@@ -59,6 +61,10 @@ render(
 
 render(siteMainElement, new Filter().getElement(), RenderPosition.BEFOREEND);
 
+if (films.length === 0) {
+  render(siteMainElement, new NoFilms().getElement(), RenderPosition.BEFOREEND);
+}
+
 render(siteMainElement, new Section().getElement(), RenderPosition.BEFOREEND);
 
 const section = document.querySelector(`.films`);
@@ -84,10 +90,12 @@ function cardAndPopup(prevTasksCount) {
   });
   return popups;
 }
+
 cardAndPopup();
 
-render(section, new ExtraFilms().getElement(), RenderPosition.BEFOREEND);
-
+if (films.length !== 0) {
+  render(section, new ExtraFilms().getElement(), RenderPosition.BEFOREEND);
+}
 const extraFilmsRated = document.querySelector(`.topRated`);
 const extraFilmsCommented = document.querySelector(`.mostCommented`);
 let topRatedArr = films.slice(0);
@@ -107,6 +115,7 @@ if (topRatedArr[0] !== 0) {
     );
   }
 }
+
 mostCommentedArr.sort(function (a, b) {
   return b.comments.length - a.comments.length;
 });
@@ -122,7 +131,7 @@ if (mostCommentedArr[0] !== 0) {
   }
 }
 
-const openPopupListner = (event) => {
+function openPopupListner(event) {
   render(
       siteMainElement,
       popups[event.currentTarget.id].getElement(),
@@ -135,7 +144,15 @@ const openPopupListner = (event) => {
         .querySelector(`.main`)
         .removeChild(document.querySelector(`.film-details`));
     });
-};
+
+  document.addEventListener(`keydown`, function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      document
+        .querySelector(`.main`)
+        .removeChild(document.querySelector(`.film-details`));
+    }
+  });
+}
 
 let allCards = document.querySelectorAll(`.film-card`);
 
@@ -144,6 +161,9 @@ allCards.forEach(function (element) {
 });
 
 const loadMoreButton = document.querySelector(`.films-list__show-more`);
+if (films.length === 0) {
+  loadMoreButton.remove();
+}
 loadMoreButton.addEventListener(`click`, () => {
   allCards.forEach(function (element) {
     element.removeEventListener(`click`, openPopupListner);
