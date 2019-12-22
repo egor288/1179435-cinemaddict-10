@@ -136,6 +136,9 @@ function openPopupListner(event) {
 
   const OnPopupEscPres = (evt) => {
     if (evt.keyCode === ESC_KEYCODE) {
+      document
+        .querySelector(`.film-details__close-btn`)
+        .removeEventListener(`click`, OnclosePopupBtn);
       document.removeEventListener(`keydown`, OnPopupEscPres);
       document
         .querySelector(`.main`)
@@ -144,6 +147,7 @@ function openPopupListner(event) {
   };
 
   const OnclosePopupBtn = () => {
+    document.removeEventListener(`keydown`, OnPopupEscPres);
     document
       .querySelector(`.film-details__close-btn`)
       .removeEventListener(`click`, OnclosePopupBtn);
