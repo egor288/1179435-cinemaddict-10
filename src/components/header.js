@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 export const renderHeader = (number) => {
   const renderRank = (filmsCount) => {
     if (filmsCount <= 0) {
@@ -22,25 +22,14 @@ export const renderHeader = (number) => {
   </section>`;
 };
 
-export default class Header {
-  constructor(rank) {
-    this._rank = rank;
-    this._element = null;
+export default class Header extends AbstractComponent {
+  constructor(header) {
+    super();
+
+    this._header = header;
   }
 
   getTemplate() {
-    return renderHeader(this._rank);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return renderHeader(this._header);
   }
 }

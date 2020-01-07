@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 export const renderNavigation = (data) => {
   return `<nav class="main-navigation">
     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
@@ -9,25 +9,14 @@ export const renderNavigation = (data) => {
   </nav>`;
 };
 
-export default class Navigation {
-  constructor(counters) {
-    this._counters = counters;
-    this._element = null;
+export default class Navigation extends AbstractComponent {
+  constructor(navigation) {
+    super();
+
+    this._navigation = navigation;
   }
 
   getTemplate() {
-    return renderNavigation(this._counters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return renderNavigation(this._navigation);
   }
 }

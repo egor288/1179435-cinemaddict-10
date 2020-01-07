@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 import {films} from "../main.js";
 const renderFilters = () => {
   return `<ul class="sort">
@@ -24,25 +24,8 @@ export const sortByRating = () => {
   return newFilms;
 };
 
-export default class Filter {
-  constructor(filters) {
-    this._filters = filters;
-    this._element = null;
-  }
-
+export default class Filter extends AbstractComponent {
   getTemplate() {
-    return renderFilters(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return renderFilters();
   }
 }

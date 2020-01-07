@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 const renderfilmCard = (element) => {
   const durationMinutes = (elem) => {
     let minutes = Math.round(elem.duration % 60);
@@ -31,25 +31,21 @@ const renderfilmCard = (element) => {
         </article>`;
 };
 
-export default class FilmCard {
-  constructor(film) {
-    this._film = film;
-    this._element = null;
+export default class FilmCard extends AbstractComponent {
+  constructor(card) {
+    super();
+
+    this._card = card;
   }
 
   getTemplate() {
-    return renderfilmCard(this._film);
+    return renderfilmCard(this._card);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      const popupId = evt.currentTarget.id;
+      handler(popupId);
+    });
   }
 }

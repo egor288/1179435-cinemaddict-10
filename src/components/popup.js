@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 export const renderPopup = (filmCard) => {
   const durationMinutes = (elem) => {
     let minutes = Math.round(elem.duration % 60);
@@ -158,25 +158,14 @@ export const renderPopup = (filmCard) => {
 </section>`;
 };
 
-export default class Popup {
-  constructor(filmElement) {
-    this._filmElement = filmElement;
-    this._element = null;
+export default class Popup extends AbstractComponent {
+  constructor(popup) {
+    super();
+
+    this._popup = popup;
   }
 
   getTemplate() {
-    return renderPopup(this._filmElement);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return renderPopup(this._popup);
   }
 }
