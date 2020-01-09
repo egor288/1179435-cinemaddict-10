@@ -125,7 +125,6 @@ export default class PageController {
 
   _renderLoadMoreButton() {
 
-    let allCards = document.querySelectorAll(`.film-card`);
 
     remove(this._loadMoreButton);
 
@@ -138,7 +137,6 @@ export default class PageController {
 
       this._renderFilmCards(prevTasksCount);
 
-      allCards = document.querySelectorAll(`.film-card`);
 
       if (this._showingFilmsCount >= this._films.length) {
         remove(this._loadMoreButton);
