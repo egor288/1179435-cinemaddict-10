@@ -58,14 +58,6 @@ export default class PageController {
     this._renderTopRated();
     this._renderMostCommented();
 
-
-    // this._renderLoadMoreFilms(this._films, showingFilmsCount);
-
-    // allCards.forEach(function (element) {
-    //   element.addEventListener(`click`, openPopupListner);
-    // });
-
-
   }
 
   _renderFilmCards(prevTasksCount) {
@@ -130,43 +122,33 @@ export default class PageController {
 
   }
 
-  _renderLoadMoreButton() {
-    remove(this._loadMoreButton);
 
-    // if (this._showingTasksCount >= this._tasksModel.getTasks().length) {
-    //   return;
-    // }
+  _renderLoadMoreButton() {
+
+    let allCards = document.querySelectorAll(`.film-card`);
+
+    remove(this._loadMoreButton);
 
     const container = this._container.getElement();
     render(container, this._loadMoreButton, RenderPosition.BEFOREEND);
-    this._loadMoreButton.setClickHandler(this._onLoadMoreButtonClick);
+    this._loadMoreButton.setClickHandler(() => {
+      const prevTasksCount = this._showingFilmsCount;
+
+      this._showingFilmsCount = this._showingFilmsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
+
+      this._renderFilmCards(prevTasksCount);
+
+      allCards = document.querySelectorAll(`.film-card`);
+
+      if (this._showingFilmsCount >= this._films.length) {
+        remove(this._loadMoreButton);
+      }
+    });
   }
 
   _onLoadMoreButtonClick() {
-    const loadMoreButton = document.querySelector(`.films-list__show-more`);
-    let allCards = document.querySelectorAll(`.film-card`);
 
-    // loadMoreButton.addEventListener(`click`, () => {
-    //   allCards.forEach(function (element) {
-    //     element.removeEventListener(`click`, this._openPopupListner());
-    //   });
-
-    const prevTasksCount = this._showingFilmsCount;
-
-    this._showingFilmsCount = this._showingFilmsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
-
-    this._renderFilmCards(prevTasksCount);
-
-    allCards = document.querySelectorAll(`.film-card`);
-
-    // allCards.forEach(function (element) {
-    //   element.addEventListener(`click`, openPopupListner);
-    // });
-
-    //   if (this._showingFilmsCount >= films.length) {
-    //     loadMoreButton.remove();
-    //   }
-    // });
+    this._loadMoreButton.setClickHandler();
   }
 
   _onFilmCardClick(popupId) {

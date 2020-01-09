@@ -48,4 +48,10 @@ export default class FilmCard extends AbstractComponent {
       handler(popupId);
     });
   }
+  removeClickHandler(handler) {
+    this.getElement().removeEventListener(`click`, (evt) => {
+      const popupId = evt.currentTarget.id;
+      handler(popupId);
+    });
+  }
 }
