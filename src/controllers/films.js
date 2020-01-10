@@ -1,4 +1,4 @@
-
+import Sort, {sortByDate, sortByRating, SortType} from "../components/filters";
 import ExtraFilms from "../components/extra-films";
 import FilmCard from "../components/film-card";
 import Films from "../components/films.js";
@@ -19,6 +19,7 @@ export default class PageController {
     this._loadMoreButton = new LoadMoreButton();
     this._showingFilmsCount = SHOWING_CARDS_COUNT_ON_START;
     this._popupsArr = [];
+    this._sort = new Sort();
   }
 
 
@@ -28,6 +29,7 @@ export default class PageController {
       render(this._siteMainElement, new NoFilms(), RenderPosition.BEFOREEND);
       return;
     }
+
 
     const createPopups = (filmCards) => {
       let popups = [];
@@ -41,6 +43,13 @@ export default class PageController {
     this._popupsArr = createPopups(this._films);
 
     const container = this._container.getElement();
+
+    this._sort.setSortTypeChangeHandler((sort) => {
+      this._onSortTypeChange(sort);
+    });
+
+    render(container, this._sort, RenderPosition.BEFOREEND);
+
     render(container, new Films(), RenderPosition.BEFOREEND);
 
     this._filmsContaner = document.querySelector(`.films-list__container`);
@@ -122,14 +131,51 @@ export default class PageController {
 
   }
 
+  _renderSortedFilmCards(arr) {
+    document.querySelectorAll(`.film-card`).forEach((element) => {
+      element.remove();
+    });
+
+    arr.forEach((elem) => {
+      let newFilm = new FilmCard(elem);
+      render(this._filmsContaner, newFilm, RenderPosition.BEFOREEND);
+    });
+    this._renderTopRated();
+    this._renderMostCommented();
+  }
+
+  _onSortTypeChange(sortType) {
+    let sortedFilms = [];
+
+    switch (sortType) {
+      case SortType.DATE:
+        sortedFilms = sortByDate(this._films);
+        break;
+      case SortType.RATING:
+        sortedFilms = sortByRating(this._films);
+        break;
+      case SortType.DEFAULT:
+        sortedFilms = this._films.slice(0, this._showingFilmsCount);
+        break;
+    }
+
+    this._renderSortedFilmCards(sortedFilms);
+
+
+    if (sortType === SortType.DEFAULT) {
+      this._renderLoadMoreButton();
+    } else {
+      remove(this._loadMoreButton);
+    }
+  }
 
   _renderLoadMoreButton() {
-
 
     remove(this._loadMoreButton);
 
     const container = this._container.getElement();
     render(container, this._loadMoreButton, RenderPosition.BEFOREEND);
+
     this._loadMoreButton.setClickHandler(() => {
       const prevTasksCount = this._showingFilmsCount;
 
@@ -142,6 +188,7 @@ export default class PageController {
         remove(this._loadMoreButton);
       }
     });
+
   }
 
   _onLoadMoreButtonClick() {

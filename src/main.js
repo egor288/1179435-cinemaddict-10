@@ -1,5 +1,4 @@
 import {render, RenderPosition} from "./utils/render";
-import Filter from "./components/filters";
 import Header from "./components/header";
 import Navigation from "./components/navigation";
 import {generateArr} from "./mock/film-card-mock";
@@ -52,7 +51,6 @@ render(
     RenderPosition.BEFOREEND
 );
 
-render(siteMainElement, new Filter(), RenderPosition.BEFOREEND);
 
 const SectionComponent = new Section();
 render(siteMainElement, SectionComponent, RenderPosition.BEFOREEND);
