@@ -58,7 +58,6 @@ export default class PageController {
 
     this._renderFilmCards(0);
 
-    this._renderLoadMoreButton();
 
     if (this._films.length !== 0) {
       render(container, new ExtraFilms(), RenderPosition.BEFOREEND);
@@ -66,6 +65,8 @@ export default class PageController {
 
     this._renderTopRated();
     this._renderMostCommented();
+
+    this._renderLoadMoreButton();
 
   }
 
@@ -170,8 +171,11 @@ export default class PageController {
   }
 
   _renderLoadMoreButton() {
-
     remove(this._loadMoreButton);
+
+    document.querySelector(`.films-list--extra`).remove();
+    document.querySelector(`.films-list--extra`).remove();
+
 
     const container = this._container.getElement();
     render(container, this._loadMoreButton, RenderPosition.BEFOREEND);
@@ -188,6 +192,12 @@ export default class PageController {
         remove(this._loadMoreButton);
       }
     });
+
+
+    render(container, new ExtraFilms(), RenderPosition.BEFOREEND);
+
+    this._renderTopRated();
+    this._renderMostCommented();
 
   }
 
