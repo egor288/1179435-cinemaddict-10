@@ -1,3 +1,4 @@
+import {formatTime, formatDate, formatDateForComment} from "../utils/common";
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {films} from "../main";
 
@@ -52,12 +53,16 @@ const rateButtons = `<div class="form-details__middle-container">
 </div>`;
 
 export const renderPopup = (filmCard) => {
-  const durationMinutes = (elem) => {
-    let minutes = Math.round(elem.duration % 60);
-    if (minutes >= 0 && minutes <= 9) {
-      return `0${minutes}`;
-    }
-    return minutes;
+  const formatDuration = (elem) => {
+    return formatTime(elem.duration);
+  };
+
+  const formatReleaseDate = (elem) => {
+    return formatDate(elem.year, elem.month, elem.day);
+  };
+
+  const formatCommentDate = (elem) => {
+    return formatDateForComment(elem.date);
   };
 
   const renderComments = () => {
@@ -71,7 +76,7 @@ export const renderPopup = (filmCard) => {
               <p class="film-details__comment-text">${comment.mesage}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.userName}</span>
-                <span class="film-details__comment-day">${comment.date}</span>
+                <span class="film-details__comment-day">${formatCommentDate(comment)}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
@@ -128,15 +133,11 @@ export const renderPopup = (filmCard) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${filmCard.day} ${
-  filmCard.month
-} ${filmCard.year}</td>
+              <td class="film-details__cell">${formatReleaseDate(filmCard)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${Math.round(
-      filmCard.duration / 60
-  )}:${durationMinutes(filmCard)}</td>
+              <td class="film-details__cell">${formatDuration(filmCard)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>

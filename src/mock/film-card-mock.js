@@ -114,20 +114,6 @@ const genres = [
   `Mystery`
 ];
 
-const months = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
 
 export const generateArr = (filmsCount) => {
   const filmCards = [];
@@ -136,8 +122,8 @@ export const generateArr = (filmsCount) => {
     card.id = i;
     card.title = namesOfFilms[getRandomInRange(0, namesOfFilms.length - 1)];
     card.rating = `${getRandomInRange(0, 10)}.${getRandomInRange(0, 9)}`;
-    card.day = getRandomInRange(0, 30);
-    card.month = months[getRandomInRange(0, months.length - 1)];
+    card.day = getRandomInRange(1, 31);
+    card.month = getRandomInRange(0, 11);
     card.year = getRandomInRange(1900, 2019);
     card.duration = `${getRandomInRange(60, 300)}`;
     card.poster = posters[getRandomInRange(0, posters.length - 1)];

@@ -1,5 +1,5 @@
-/* eslint-disable strict */
 const path = require(`path`);
+const MomentLocalesPlugin = require(`moment-locales-webpack-plugin`);
 
 module.exports = {
   mode: `development`,
@@ -14,5 +14,10 @@ module.exports = {
     publicPath: `http://localhost:8000/`,
     compress: true,
     watchContentBase: true
-  }
+  },
+  plugins: [
+    new MomentLocalesPlugin({
+      localesToKeep: [`es-us`],
+    })
+  ]
 };

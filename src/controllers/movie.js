@@ -1,7 +1,7 @@
 import {render, RenderPosition} from '../utils/render.js';
 import FilmCard from "../components/film-card";
 import Popup from "../components/popup";
-// import {films} from '../main.js';
+// import {films}  from '../main.js';
 
 const ESC_KEYCODE = 27;
 const siteMainElement = document.querySelector(`.main`);
