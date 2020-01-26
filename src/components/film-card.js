@@ -1,4 +1,5 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractComponent from "./abstract-component";
+import {films} from "../main";
 const renderfilmCard = (element) => {
   const durationMinutes = (elem) => {
     let minutes = Math.round(elem.duration % 60);
@@ -7,6 +8,12 @@ const renderfilmCard = (element) => {
     }
     return minutes;
   };
+
+  const activeClass = `film-card__controls-item--active`;
+
+  let activeWatched = element.watched ? activeClass : ``;
+  let activeFavorite = element.favorite ? activeClass : ``;
+  let activeWatchlist = element.watchlist ? activeClass : ``;
 
   return `<article class="film-card" id="${element.id}">
           <h3 class="film-card__title">${element.title}</h3>
@@ -24,9 +31,9 @@ const renderfilmCard = (element) => {
           <p class="film-card__description">${element.description}</p>
           <a class="film-card__comments">${element.comments.length} comments</a>
           <form class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${activeWatchlist}">Add to watchlist</button>
+            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${activeWatched}">Mark as watched</button>
+            <button class="film-card__controls-item button film-card__controls-item--favorite ${activeFavorite}">Mark as favorite</button>
           </form>
         </article>`;
 };
@@ -42,14 +49,50 @@ export default class FilmCard extends AbstractComponent {
     return renderfilmCard(this._card);
   }
 
-  setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
-      const popupId = evt.currentTarget.id;
-      handler(popupId);
+  setOpenPopupClickHandler(handler) {
+    this.setEventListener(handler, `.film-card__title`);
+    this.setEventListener(handler, `img`);
+    this.setEventListener(handler, `.film-card__comments`);
+  }
+
+  removeOpenPopupClickHandler(handler) {
+    this.getElement().removeEventListener(`click`, handler);
+  }
+
+  setAddToWatchlistClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, (evt) => {
+      const card = films[evt.target.parentNode.parentNode.id];
+      const button = `watchList`;
+      evt.preventDefault();
+
+      handler(card, button);
     });
   }
-  removeClickHandler(handler) {
-    this.getElement().removeEventListener(`click`, (evt) => {
+
+  setMarkAsWatchedClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, (evt) => {
+      const card = films[evt.target.parentNode.parentNode.id];
+      const button = `history`;
+      evt.preventDefault();
+
+      handler(card, button);
+    });
+
+  }
+
+  setFavoriteClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, (evt) => {
+      const card = films[evt.target.parentNode.parentNode.id];
+      const button = `favorite`;
+      evt.preventDefault();
+
+      handler(card, button);
+    });
+
+  }
+
+  setEventListener(handler, element) {
+    this.getElement().querySelector(element).addEventListener(`click`, (evt) => {
       const popupId = evt.currentTarget.id;
       handler(popupId);
     });
