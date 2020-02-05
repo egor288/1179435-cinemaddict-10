@@ -4,6 +4,7 @@ import Navigation from "./components/navigation";
 import {generateArr} from "./mock/film-card-mock";
 import PageController from './controllers/films.js';
 import Section from "./components/section";
+import Movie from "./models/movies";
 export const films = generateArr(19);
 
 
@@ -51,11 +52,14 @@ render(
     RenderPosition.BEFOREEND
 );
 
+const movie = new Movie();
+movie.setFilm(films);
+
 
 const SectionComponent = new Section();
 render(siteMainElement, SectionComponent, RenderPosition.BEFOREEND);
 
-const pageController = new PageController(SectionComponent, siteMainElement, films);
+const pageController = new PageController(SectionComponent, siteMainElement, movie);
 
 pageController.render();
 
